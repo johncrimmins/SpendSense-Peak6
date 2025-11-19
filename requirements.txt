@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pandas
+sqlalchemy
+jinja2
+faker
+aiosqlite
+pytest
+httpx
