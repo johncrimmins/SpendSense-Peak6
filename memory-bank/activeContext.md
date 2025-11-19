@@ -9,13 +9,14 @@ Implementation of Phase 1: Data & Logic.
 *   Creation of Memory Bank (`memory-bank/`).
 *   Initialization of Task Master project (though facing persistence issues, fallback to internal TODOs).
 *   Defined granular tasks for Phase 1.
+*   Completed Task 1 by standing up the repo structure, requirements, and .gitignore baseline.
 
 ## Immediate Next Steps
-1.  Execute **Task 1: Project Setup**.
-    *   Create directory structure.
-    *   Create `requirements.txt`.
-    *   Setup git.
-2.  Execute **Task 2: Implement Data Generator**.
+1.  Execute **Task 2: Implement Data Generator**.
+    *   Flesh out `ingest/generator.py` for 50–100 synthetic users.
+    *   Ensure determinism and coverage of persona trigger metrics.
+2.  Prep work for **Task 3: Data Loader**.
+    *   Decide on SQLite schema scaffolding and shared constants.
 
 ## Active Decisions
 *   **htmx Adoption:** Chosen to provide a responsive UI without the overhead of a full SPA framework (React/Vue) for the user-facing app.
