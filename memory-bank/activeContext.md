@@ -9,13 +9,14 @@ Implementation of Phase 1: Data & Logic.
 *   Creation of Memory Bank (`memory-bank/`).
 *   Initialization of Task Master project (though facing persistence issues, fallback to internal TODOs).
 *   Defined granular tasks for Phase 1.
+*   Completed base project setup (directory skeleton, `requirements.txt`, `.gitignore`).
+*   Built deterministic synthetic data generator (`ingest/generator.py`) plus initial CSV outputs in `data/raw/`.
 
 ## Immediate Next Steps
-1.  Execute **Task 1: Project Setup**.
-    *   Create directory structure.
-    *   Create `requirements.txt`.
-    *   Setup git.
-2.  Execute **Task 2: Implement Data Generator**.
+1.  Execute **Task 3: Implement Data Loader**.
+    *   Normalize generated CSVs into SQLite tables (`Users`, `Accounts`, `Transactions`).
+    *   Provide CLI/utility entrypoint that re-creates `spendsense.db`.
+    *   Ensure idempotent runs (truncate/replace existing tables).
 
 ## Active Decisions
 *   **htmx Adoption:** Chosen to provide a responsive UI without the overhead of a full SPA framework (React/Vue) for the user-facing app.
