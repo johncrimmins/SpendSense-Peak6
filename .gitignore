@@ -34,6 +34,9 @@ spendsense.db
 # Taskmaster
 .taskmaster/
 
+# Generated datasets
+data/
+
 # OS junk
 .DS_Store
 Thumbs.db

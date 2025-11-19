@@ -2,14 +2,14 @@
 
 ## Status Overview
 **Project Phase:** Initialization
-**Overall Progress:** 5%
+**Overall Progress:** 35%
 
 ## Milestones
 
 ### Phase 1: Data & Logic (In Progress)
 - [x] Project Structure Setup
-- [ ] Data Generator (`ingest/generator.py`)
-- [ ] Data Loader (`ingest/loader.py`)
+- [x] Data Generator (`ingest/generator.py`)
+- [x] Data Loader (`ingest/loader.py`)
 - [ ] Feature Engineering (`engine/features.py`)
 - [ ] Persona Classifier (`engine/classifier.py`)
 
