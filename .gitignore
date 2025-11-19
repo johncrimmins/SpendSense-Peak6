@@ -1,25 +1,19 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-dev-debug.log
-
-# Dependency directories
-node_modules/
-
-# Environment variables
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.db
 .env
-
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# OS specific
+.venv/
+venv/
+.env.local
+.ds_store
+.idea/
+.vscode/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
 .DS_Store
+coverage/
+node_modules/
+.taskmaster/state.json
+.taskmaster/reports/
