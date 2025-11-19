@@ -1,0 +1,126 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Project Setup",
+        "description": "Set up the Python environment, requirements.txt, and project directory structure as defined in systemPatterns.md. Initialize git if not already done.",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [],
+        "details": "- Create requirements.txt with: fastapi, uvicorn, pandas, sqlalchemy, jinja2, faker, aiosqlite, pytest, httpx, htmx.\n- Create directory structure: ingest/, engine/, web/, guardrails/, operator/, docs/.\n- Create .gitignore.",
+        "testStrategy": "Verify environment activation and package installation.",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "Implement Data Generator",
+        "description": "Implement the synthetic data generator to create realistic Plaid-like transaction data for 50-100 users.",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [
+          "1"
+        ],
+        "details": "- Create `ingest/generator.py`.\n- Use `Faker` to generate users.\n- Ensure generation of specific persona patterns, especially 'Wealth Compounder' (High Income + Low Savings).\n- Output JSON/CSV files.",
+        "testStrategy": "Run generator and verify output contains expected patterns and volume.",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "Implement Data Loader",
+        "description": "Implement the data loader to ingest generated data into SQLite.",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [
+          "2"
+        ],
+        "details": "- Create `ingest/loader.py`.\n- Define SQLAlchemy models in `ingest/models.py` (or similar): Users, Accounts, Transactions.\n- Ingest CSV/JSON into `spendsense.db`.",
+        "testStrategy": "Query SQLite db to verify data integrity.",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "Implement Feature Engine",
+        "description": "Implement the feature engineering module to calculate behavioral metrics.",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [
+          "3"
+        ],
+        "details": "- Create `engine/features.py`.\n- Calculate: Burn Rate, Liquid Runway, Inefficiency Score, Credit Utilization, Subscription metrics.\n- Use Pandas/SQL aggregations.\n- Populate `financial_snapshot` table.",
+        "testStrategy": "Unit tests for metric calculations against known inputs.",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "Implement Persona Classifier",
+        "description": "Implement the decision tree for assigning user personas.",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [
+          "4"
+        ],
+        "details": "- Create `engine/classifier.py`.\n- Implement logic for: Debt Fighter, Gig Worker, Auto-Payer, Wealth Compounder, Optimizer.\n- Update `users` table with assigned persona.",
+        "testStrategy": "Verify correct classification of seed users with known patterns.",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "Implement Recommendation Engine",
+        "description": "Create the logic to generate specific, math-backed recommendations.",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [
+          "5"
+        ],
+        "details": "- Create `engine/recommendations.py`.\n- Implement logic to generate headlines and 'Because' strings based on user persona and metrics.\n- Populate `recommendations` table.",
+        "testStrategy": "Verify recommendations match persona needs and reference correct data.",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "Build API Endpoints",
+        "description": "Create FastAPI endpoints to serve user data and recommendations.",
+        "status": "pending",
+        "priority": "medium",
+        "dependencies": [
+          "6"
+        ],
+        "details": "- Create `main.py` and routers.\n- Implement `GET /api/user/{id}/dashboard`.\n- Implement `POST /api/refresh`.",
+        "testStrategy": "Test endpoints with curl or Swagger UI.",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "Build User Interface",
+        "description": "Develop the 'Stunning' UI using Jinja2, Tailwind, and htmx.",
+        "status": "pending",
+        "priority": "medium",
+        "dependencies": [
+          "7"
+        ],
+        "details": "- Setup templates directory and base layout.\n- Implement Dashboard view with Hero section and Insight Feed.\n- Integrate Chart.js for visualizations.\n- Use htmx for interactivity.",
+        "testStrategy": "Visual inspection of UI responsiveness and design fidelity.",
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "Implement Operator View",
+        "description": "Build the Streamlit admin dashboard for oversight.",
+        "status": "pending",
+        "priority": "low",
+        "dependencies": [
+          "3"
+        ],
+        "details": "- Create `operator/app.py`.\n- Connect to `spendsense.db`.\n- Implement user table view and override functionality.",
+        "testStrategy": "Verify operator can view data and override personas.",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-11-19T15:52:21.760Z",
+      "updated": "2025-11-19T15:52:21.760Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

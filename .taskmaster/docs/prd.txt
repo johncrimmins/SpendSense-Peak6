@@ -1,0 +1,181 @@
+# PART 1: Product Requirements Document (PRD)
+
+**Project:** SpendSense | **Version:** 2.0 (Final) | **Status:** Ready for Dev
+**Core Value:** Transform raw transaction data into explainable, high-fidelity financial guidance.
+
+## 1. Executive Summary
+
+SpendSense is a financial intelligence engine that bridges the gap between data aggregation (Plaid) and personalized advice. Unlike generic PFM (Personal Financial Management) tools that simply show charts, SpendSense detects specific behavioral patterns—such as "High-Income Inefficiency" (The Wealth Compounder)—and offers concrete, explainable next steps.
+
+**The North Star:** "Every recommendation must answer 'Why?' with user-specific math."
+
+-----
+
+## 2. User Personas (The "Brain")
+
+The system must deterministically assign users to **one** primary persona per timeframe based on the hierarchy below.
+
+### Priority 1: The Debt Fighter (High Utilization)
+*   **Trigger:** Credit Utilization >= 50% OR Interest Charges > $0 OR Past Due status.
+*   **User Psychology:** Stressed, avoidant. Needs immediate triage.
+*   **Experience:** Red/Orange urgency signals. Focus on "Snowball Method" visualization.
+
+### Priority 2: The Gig Worker (Variable Income)
+*   **Trigger:** Income Standard Deviation > 30% of Mean OR Pay Gap > 20 days.
+*   **User Psychology:** Anxious about cash flow. Needs smoothing.
+*   **Experience:** "Safe to Spend" calculator instead of standard monthly budgets.
+
+### Priority 3: The Auto-Payer (Subscription Heavy)
+*   **Trigger:** >= 3 Recurring Merchants AND Subscription % of Outflow >= 10%.
+*   **User Psychology:** Unaware of "leakage." Needs an audit.
+*   **Experience:** A "Cancel Flow" interface showing total annual savings.
+
+### Priority 4: The Wealth Compounder (High Value / HENRY)
+*   **Trigger:** Top 20% Income AND Cash Buffer > 3 Months Expenses AND Savings Rate < 10%.
+*   **User Psychology:** Efficient earner, inefficient allocator. Losing money to inflation.
+*   **Experience:** Gold/Premium aesthetic. Focus on APY, compounding visualizations, and tax-advantaged buckets.
+*   **Why this matters:** This is the highest LTV (Lifetime Value) user for a bank.
+
+### Priority 5: The Optimizer (Savings Builder)
+*   **Trigger:** Utilization < 10% AND Net Savings Positive.
+*   **User Psychology:** Stable. Gamify their progress.
+*   **Experience:** Progress bars, goal confetti.
+
+## 3. Functional Requirements
+
+### 3.1 Data Ingestion (The Input)
+*   **Synthetic Generator:** Must create deterministic Plaid-formatted JSON/CSV.
+*   **Fields:** `account_id`, `current_balance`, `iso_currency_code`, `merchant_name`, `amount`, `date`, `category` (taxonomy v2).
+*   **Volume:** 50-100 Users to prove statistical significance.
+
+### 3.2 Signal Detection (The Math)
+The system must calculate these exact metrics for every user:
+1.  **Burn Rate:** 6-month rolling average of all outflows (excluding internal transfers).
+2.  **Liquid Runway:** `(Checking + Savings Balance) / Burn Rate`.
+3.  **Inefficiency Score:** `(Idle Cash - 3x Burn Rate)`. Positive numbers indicate "Lazy Money."
+
+### 3.3 Recommendation Engine (The Output)
+*   **Constraint:** Zero "Black Box" advice.
+*   **Structure:**
+    *   **Headline:** "Stop losing $140/month."
+    *   **The 'Because':** "You have $45,000 in checking. Keeping only $15,000 (3 months expenses) and moving the rest to a 4.5% HYSA generates passive income."
+    *   **Action:** "View High-Yield Offers."
+
+### 3.4 Stunning User Interface (The Experience)
+*   **Requirement:** The UI must look like a Series-B Fintech Product (e.g., Copilot, Monarch, Robinhood), not a data science dashboard.
+*   **Visual Language:**
+    *   **Dark Mode Default:** Deep slates/blacks with vibrant gradients for data.
+    *   **Glassmorphism:** Semi-transparent cards for account details.
+    *   **Motion:** Numbers should "count up" when loading. Charts should animate on entry.
+*   **Key Views:**
+    *   **The Pulse:** A single number showing "Free to Spend" or "Net Worth."
+    *   **The Insight Feed:** A scrollable TikTok-style feed of the generated recommendations.
+
+### 3.5 Operator Guardrails (The Safety)
+*   **Admin Dashboard:** A separate view for the "Bank Analyst."
+*   **Capabilities:**
+    *   View "Decision Trace" (e.g., User A mapped to Persona B because Metric X > Threshold Y).
+    *   Override Persona manually.
+    *   Audit "Tone Check" pass/fail logs.
+
+-----
+
+# PART 2: Technical Architecture Document (TAD)
+
+**Stack Strategy:** "Lightweight Backend, Heavy Visuals."
+**Philosophy:** Use Python for logic (strength) and modern CSS for visuals (beauty), avoiding complex JS build chains.
+
+## 1. Technology Stack
+
+| Component | Selection | Justification |
+| :--- | :--- | :--- |
+| **Core Language** | **Python 3.11+** | Best-in-class for financial math and data manipulation. |
+| **Backend API** | **FastAPI** | Async, high-performance, auto-documents via OpenAPI. |
+| **Database** | **SQLite** | Zero-latency, local file storage, relational integrity. |
+| **ORM** | **SQLAlchemy (Async)** | Modern database interaction. |
+| **Frontend (User)** | **Jinja2 + TailwindCSS + htmx** | Server-side rendering allows for "Stunning" UI without a React/Node complex build. htmx adds dynamic interactivity. |
+| **Frontend (Admin)**| **Streamlit** | Rapid development for the internal operator view. |
+| **Visualization** | **Chart.js** | Lightweight JS library for the "Stunning" charts (embedded in Jinja). |
+
+## 2. System Modules
+
+### 2.1 `ingest/` (Data Foundation)
+*   **`generator.py`:** Uses `Faker` to seed the 5 personas. **Critical:** Must force the "Wealth Compounder" pattern (High Income + Low Savings Rate) to test the high-value logic.
+*   **`loader.py`:** Normalizes CSVs into 3 SQLite tables: `Users`, `Accounts`, `Transactions`.
+
+### 2.2 `engine/` ( The Brain)
+*   **`features.py`:** Vectorized Pandas operations.
+    *   *Optimization:* Calculate metrics on the database layer using SQL aggregations where possible for speed, fallback to Pandas for complex sliding windows.
+*   **`classifier.py`:** The Decision Tree.
+*   **`recommendations.py`:** Rule-based engine.
+
+### 2.3 `web/` (The Stunning UI)
+This is the differentiator. Instead of a basic dashboard, we implement a **Mobile-First Web App**.
+*   **Templating:** Use Jinja2 inheritance (`base.html`) for layout.
+*   **Styling:** Import TailwindCSS via CDN (for dev speed) or minified local file.
+*   **Interactivity:** Use **htmx** for dynamic updates (e.g. switching tabs, infinite scroll) without full reloads.
+*   **Visual Requirements:**
+    *   **Gradients:** Use CSS gradients `bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500` for the "High Value" cards.
+    *   **Cards:** `backdrop-blur-md bg-white/10` for the glassmorphism effect.
+    *   **Typography:** Inter or SF Pro Display font stack.
+
+### 2.4 `guardrails/` (Compliance)
+*   **`tone_police.py`:** A dictionary-based filter checking recommendations against a "Banned Words List" (e.g., "stupid," "poor," "waste").
+
+## 3. Data Model (Schema)
+
+```sql
+CREATE TABLE users (
+    user_id TEXT PRIMARY KEY,
+    name TEXT,
+    persona TEXT, -- The computed label
+    last_updated DATETIME
+);
+
+CREATE TABLE financial_snapshot (
+    user_id TEXT,
+    calc_date DATE,
+    net_worth REAL,
+    burn_rate REAL,
+    runway_months REAL, -- The "Wealth Compounder" signal
+    credit_utilization REAL,
+    subscription_count INT,
+    FOREIGN KEY(user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE recommendations (
+    rec_id TEXT PRIMARY KEY,
+    user_id TEXT,
+    title TEXT,
+    rationale TEXT, -- The "Because" string
+    action_link TEXT,
+    tone_check_passed BOOLEAN
+);
+```
+
+## 4. Implementation Guidance & Roadmap
+
+### Phase 1: Data & Logic (Days 1-3)
+1.  **Setup:** `pip install fastapi uvicorn pandas sqlalchemy jinja2 faker`.
+2.  **Generate:** Run the `generate_data.py` script to create `spendsense.db`.
+3.  **Analyze:** Build the `FeatureEngine`. **Verification Step:** Ensure "Wealth Compounder" users show `runway_months > 3.0`.
+4.  **Classify:** Implement the Persona Priority Queue.
+
+### Phase 2: The API (Day 4)
+1.  **Endpoint:** `GET /api/user/{id}/dashboard`. Returns the JSON payload containing the Persona, calculated metrics, and the specific "Because" rationale.
+2.  **Endpoint:** `POST /api/refresh`. Triggers a re-calculation of the engine.
+
+### Phase 3: The "Stunning" UI (Days 5-7)
+*   **Layout:** Create `templates/dashboard.html`.
+*   **Hero Section:** Display "Net Worth" and "Monthly Burn" using large, thin typography on a dark background.
+*   **The Feed:** Render the Recommendations as "Cards."
+    *   *Debt Fighter Card:* Red gradient border. Alert icon.
+    *   *Wealth Compounder Card:* Gold/Purple gradient. Graph icon showing compound growth.
+*   **Charts:** Integrate `Chart.js`. Create a line chart showing "Projected Net Worth" if they follow the recommendation.
+
+### Phase 4: The Operator View (Day 8)
+*   Use **Streamlit**.
+*   Connect directly to `spendsense.db`.
+*   Table view of all users with a dropdown to filter by "Assigned Persona."
+*   **Success Metric:** Analyst can find a "Wealth Compounder" and validate *why* they were chosen in <5 seconds.
+
