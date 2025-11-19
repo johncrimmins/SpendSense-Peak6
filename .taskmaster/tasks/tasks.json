@@ -5,7 +5,7 @@
         "id": 1,
         "title": "Project Setup",
         "description": "Set up the Python environment, requirements.txt, and project directory structure as defined in systemPatterns.md. Initialize git if not already done.",
-        "status": "pending",
+        "status": "done",
         "priority": "high",
         "dependencies": [],
         "details": "- Create requirements.txt with: fastapi, uvicorn, pandas, sqlalchemy, jinja2, faker, aiosqlite, pytest, httpx, htmx.\n- Create directory structure: ingest/, engine/, web/, guardrails/, operator/, docs/.\n- Create .gitignore.",
@@ -16,7 +16,7 @@
         "id": 2,
         "title": "Implement Data Generator",
         "description": "Implement the synthetic data generator to create realistic Plaid-like transaction data for 50-100 users.",
-        "status": "pending",
+        "status": "done",
         "priority": "high",
         "dependencies": [
           "1"
