@@ -1,23 +1,21 @@
 # Active Context
 
 ## Current Focus
-Implementation of Phase 1: Data & Logic.
+Phase 1: finish the ingestion stack (loader + feature prep).
 
 ## Recent History
-*   Review of `project-brief.md`, `PRD.md`, and `architecture.md`.
-*   Decision to include **htmx** in the tech stack for better UX.
-*   Creation of Memory Bank (`memory-bank/`).
-*   Initialization of Task Master project (though facing persistence issues, fallback to internal TODOs).
-*   Defined granular tasks for Phase 1.
+*   Reviewed `project-brief.md`, `PRD.md`, and `architecture.md`.
+*   Task Master initialized; using Taskmaster tasks directly now that persistence works locally.
+*   Repo scaffolded (directories, requirements, .gitignore, README).
+*   Implemented the synthetic data generator (`ingest/generator.py`) that emits persona-aware CSV + JSON bundles (tested via CLI).
 
 ## Immediate Next Steps
-1.  Execute **Task 1: Project Setup**.
-    *   Create directory structure.
-    *   Create `requirements.txt`.
-    *   Setup git.
-2.  Execute **Task 2: Implement Data Generator**.
+1.  Execute **Task 3: Data Loader** (`ingest/loader.py`) to push generated files into SQLite / SQLAlchemy models.
+2.  Start **Task 4: Feature Engine** once the loader stabilizes.
+3.  Document dataset schema and assumptions alongside loader work.
 
 ## Active Decisions
-*   **htmx Adoption:** Chosen to provide a responsive UI without the overhead of a full SPA framework (React/Vue) for the user-facing app.
-*   **Persona "Optimizer":** Confirmed as the 5th persona.
-*   **Task Management:** Using internal Todo list due to tool issues with Task Master persistence.
+*   **htmx Adoption:** Still via CDN/templating; no pip package required (removed from requirements).
+*   **Persona "Optimizer":** Confirmed as the 5th persona and modeled inside generator profiles.
+*   **Operator App Directory:** Renamed to `operator_app/` to avoid clashing with Python's stdlib `operator` module.
+*   **Task Management:** Continue leveraging Taskmaster `.taskmaster/tasks/tasks.json` for the authoritative plan.
